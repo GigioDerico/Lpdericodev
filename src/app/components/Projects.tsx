@@ -61,16 +61,7 @@ export function Projects() {
             </p>
           </div>
           
-          <a 
-            href="https://github.com" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-white hover:border-indigo-500/50 hover:bg-slate-800 transition-all"
-          >
-            <Github className="w-5 h-5" />
-            <span className="font-medium">Ver GitHub</span>
-            <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
-          </a>
+          
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-10">

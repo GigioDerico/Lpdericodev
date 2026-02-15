@@ -1,7 +1,7 @@
 
-  # Página de Apresentação
+  # LP dev derico
 
-  This is a code bundle for Página de Apresentação. The original project is available at https://www.figma.com/design/rCGT83h26PkG5Ua7jQEAYn/P%C3%A1gina-de-Apresenta%C3%A7%C3%A3o.
+  This is a code bundle for LP dev derico. The original project is available at https://www.figma.com/design/rCGT83h26PkG5Ua7jQEAYn/LP-dev-derico.
 
   ## Running the code
 

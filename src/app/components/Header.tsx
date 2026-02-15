@@ -1,3 +1,4 @@
+import image_193419c6de1b4b11f7fa881c7441e1527721a51d from 'figma:asset/193419c6de1b4b11f7fa881c7441e1527721a51d.png'
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -46,7 +47,7 @@ export function Header() {
             <div className="relative">
               <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity rounded-full" />
               <img 
-                src={logo} 
+                src={image_193419c6de1b4b11f7fa881c7441e1527721a51d} 
                 alt="DevBubble Logo" 
                 className="h-10 w-10 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" 
               />
@@ -61,6 +62,14 @@ export function Header() {
                 <a
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => {
+                    if (link.href === "#differentiators" && !document.getElementById("differentiators")) {
+                      e.preventDefault();
+                      const headings = Array.from(document.querySelectorAll("h2"));
+                      const target = headings.find((h) => h.textContent?.includes("Diferencial"));
+                      target?.closest("section")?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
                   className="relative px-5 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300"
                 >
                   {link.name}
