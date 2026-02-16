@@ -41,7 +41,7 @@ export function Projects() {
     <section id="projects" className="py-24 bg-slate-950 relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(18,24,27,0)_0%,rgba(99,102,241,0.03)_50%,rgba(18,24,27,0)_100%)] pointer-events-none" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-4 max-w-2xl">
@@ -50,18 +50,18 @@ export function Projects() {
               Portfolio Selecionado
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-              Experiência Real em <br/>
+              Experiência Real em <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
                 Projetos de Alto Nível
               </span>
             </h2>
             <p className="text-slate-400 text-lg">
-              De plataformas SaaS complexas a integrações de IA de ponta. 
+              De plataformas SaaS complexas a integrações de IA de ponta.
               Cada projeto é construído com foco em escalabilidade, segurança e experiência do usuário.
             </p>
           </div>
-          
-          
+
+
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
@@ -78,13 +78,16 @@ export function Projects() {
               <div className="relative h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-indigo-900/10 transition-colors z-10 mix-blend-multiply" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10" />
-                
-                <img 
-                  src={project.image} 
+
+                <img
+                  src={project.image}
                   alt={project.title}
+                  loading="lazy"
+                  width="800"
+                  height="600"
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
-                
+
                 <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity translate-y-[-10px] group-hover:translate-y-0 duration-300">
                   <div className="bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 text-white">
                     <ExternalLink className="w-5 h-5" />
@@ -105,19 +108,19 @@ export function Projects() {
               <div className="p-8 relative">
                 {/* Neon Glow on Hover */}
                 <div className="absolute -bottom-px left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
+
                 <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors">
                   {project.title}
                 </h3>
-                
+
                 <p className="text-slate-400 mb-6 leading-relaxed">
                   {project.description}
                 </p>
 
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag, i) => (
-                    <span 
-                      key={i} 
+                    <span
+                      key={i}
                       className="px-3 py-1 bg-slate-800/50 border border-slate-700/50 rounded-md text-xs font-mono text-slate-300 group-hover:border-indigo-500/30 group-hover:text-indigo-200 transition-colors"
                     >
                       {tag}

@@ -1,8 +1,8 @@
-import image_193419c6de1b4b11f7fa881c7441e1527721a51d from 'figma:asset/193419c6de1b4b11f7fa881c7441e1527721a51d.png'
+import image_193419c6de1b4b11f7fa881c7441e1527721a51d from '../../assets/193419c6de1b4b11f7fa881c7441e1527721a51d.png'
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "figma:asset/82ab46cf0fac37a755e21a52f3dede7f1e1747aa.png";
+import logo from "../../assets/82ab46cf0fac37a755e21a52f3dede7f1e1747aa.png";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,37 +24,34 @@ export function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "py-4" : "py-6"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "py-4" : "py-6"
+        }`}
     >
       {/* Neon Glow Background Effect */}
-      <div className={`absolute inset-0 transition-opacity duration-500 ${
-        scrolled ? "opacity-100" : "opacity-0"
-      }`}>
-         <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-xl border-b border-white/5 shadow-[0_0_20px_rgba(99,102,241,0.15)]" />
-         {/* Gradient Line for Neon feel */}
-         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
+      <div className={`absolute inset-0 transition-opacity duration-500 ${scrolled ? "opacity-100" : "opacity-0"
+        }`}>
+        <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-xl border-b border-white/5 shadow-[0_0_20px_rgba(99,102,241,0.15)]" />
+        {/* Gradient Line for Neon feel */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <nav className={`flex items-center justify-between transition-all duration-300 ${
-          scrolled ? "h-12" : "h-16"
-        } bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-2xl px-6 shadow-2xl shadow-indigo-500/10`}>
-          
+        <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-12" : "h-16"
+          } bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-2xl px-6 shadow-2xl shadow-indigo-500/10`}>
+
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center gap-3 group cursor-pointer">
             <div className="relative">
               <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition-opacity rounded-full" />
-              <img 
-                src={image_193419c6de1b4b11f7fa881c7441e1527721a51d} 
-                alt="DevBubble Logo" 
-                className="h-10 w-10 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" 
+              <img
+                src={image_193419c6de1b4b11f7fa881c7441e1527721a51d}
+                alt="DevBubble Logo"
+                className="h-10 w-10 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
               />
             </div>
-            
+
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/5 mr-4">
@@ -76,7 +73,7 @@ export function Header() {
                 </a>
               ))}
             </div>
-            <a 
+            <a
               href="#contact"
               className="relative overflow-hidden group bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.7)]"
             >
@@ -101,7 +98,7 @@ export function Header() {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
