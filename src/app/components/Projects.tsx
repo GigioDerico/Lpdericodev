@@ -1,42 +1,60 @@
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Github, ExternalLink, Layers, Sparkles, Database, Smartphone } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Layers, Loader2 } from "lucide-react";
+import { sql } from "../../lib/neon";
 
-const projects = [
-  {
-    title: "Nexus SaaS B2B",
-    category: "Plataforma Multi-tenant",
-    description: "Sistema completo de gestão empresarial com dashboard analítico em tempo real e arquitetura multi-tenant isolada.",
-    image: "https://images.unsplash.com/photo-1575388902449-6bca946ad549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-    tags: ["Bubble.io", "React", "Node.js"],
-    icon: Layers
-  },
-  {
-    title: "FinFlow Mobile",
-    category: "App Financeiro",
-    description: "Aplicativo nativo para controle financeiro pessoal com sincronização bancária automática via Open Finance.",
-    image: "https://images.unsplash.com/photo-1633431871820-ca72e0da2e2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-    tags: ["React Native", "Firebase", "API"],
-    icon: Smartphone
-  },
-  {
-    title: "Cyber AI Core",
-    category: "Inteligência Artificial",
-    description: "Módulo de IA generativa integrado para automação de atendimento e processamento de linguagem natural.",
-    image: "https://images.unsplash.com/photo-1760931969401-9bd6ee902798?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-    tags: ["OpenAI", "Python", "Vector DB"],
-    icon: Sparkles
-  },
-  {
-    title: "DataSync Gov",
-    category: "Integração Backend",
-    description: "Middleware de alta performance para sincronização bidirecional com APIs governamentais legadas.",
-    image: "https://images.unsplash.com/photo-1764258057610-be7ca21a0978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-    tags: ["Node.js", "Docker", "SQL"],
-    icon: Database
-  }
-];
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  image_url: string;
+  tags: string[];
+  link: string | null;
+}
 
 export function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (!sql) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const result = await sql`
+          SELECT id, title, category, description, image_url, tags, link
+          FROM public.projects
+          ORDER BY created_at DESC
+        `;
+        setProjects(result as Project[]);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-24 bg-slate-950 relative overflow-hidden">
+        <div className="container mx-auto px-4 flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return null; // Don't render the section if there are no projects
+  }
+
   return (
     <section id="projects" className="py-24 bg-slate-950 relative overflow-hidden">
       {/* Background Decor */}
@@ -60,14 +78,12 @@ export function Projects() {
               Cada projeto é construído com foco em escalabilidade, segurança e experiência do usuário.
             </p>
           </div>
-
-
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
           {projects.map((project, index) => (
             <motion.div
-              key={index}
+              key={project.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -79,24 +95,37 @@ export function Projects() {
                 <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-indigo-900/10 transition-colors z-10 mix-blend-multiply" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10" />
 
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  loading="lazy"
-                  width="800"
-                  height="600"
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-                />
-
-                <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity translate-y-[-10px] group-hover:translate-y-0 duration-300">
-                  <div className="bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 text-white">
-                    <ExternalLink className="w-5 h-5" />
+                {project.image_url ? (
+                  <img
+                    src={project.image_url}
+                    alt={project.title}
+                    loading="lazy"
+                    width="800"
+                    height="600"
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                    <Layers className="w-12 h-12 text-slate-600" />
                   </div>
-                </div>
+                )}
+
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity translate-y-[-10px] group-hover:translate-y-0 duration-300"
+                  >
+                    <div className="bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 text-white hover:bg-white/20 transition-colors">
+                      <ExternalLink className="w-5 h-5" />
+                    </div>
+                  </a>
+                )}
 
                 <div className="absolute top-4 left-4 z-20">
                   <div className="bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded-full border border-slate-800 flex items-center gap-2">
-                    <project.icon className="w-3 h-3 text-indigo-400" />
+                    <Layers className="w-3 h-3 text-indigo-400" />
                     <span className="text-xs font-medium text-indigo-200 uppercase tracking-wide">
                       {project.category}
                     </span>
@@ -106,7 +135,6 @@ export function Projects() {
 
               {/* Content */}
               <div className="p-8 relative">
-                {/* Neon Glow on Hover */}
                 <div className="absolute -bottom-px left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors">
@@ -117,16 +145,18 @@ export function Projects() {
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-slate-800/50 border border-slate-700/50 rounded-md text-xs font-mono text-slate-300 group-hover:border-indigo-500/30 group-hover:text-indigo-200 transition-colors"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {project.tags && project.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 bg-slate-800/50 border border-slate-700/50 rounded-md text-xs font-mono text-slate-300 group-hover:border-indigo-500/30 group-hover:text-indigo-200 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
