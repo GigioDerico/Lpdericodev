@@ -60,7 +60,9 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a
-              href="#contact"
+              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-8 py-4 bg-white text-slate-950 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 group"
             >
               Iniciar Projeto <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -132,7 +134,6 @@ export function Hero() {
                 <img
                   src={profileImage}
                   alt="Giorgio Profile"
-                  fetchpriority="high"
                   width="400"
                   height="500"
                   className="w-full h-full object-cover grayscale brightness-110 contrast-125 group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-110 z-0 relative"

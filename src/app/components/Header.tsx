@@ -74,7 +74,9 @@ export function Header() {
               ))}
             </div>
             <a
-              href="#contact"
+              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+              target="_blank"
+              rel="noopener noreferrer"
               className="relative overflow-hidden group bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.7)]"
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -116,7 +118,9 @@ export function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
               className="block mt-4 px-4 py-3 bg-indigo-600 text-white text-center rounded-xl font-bold shadow-lg shadow-indigo-500/25"
             >

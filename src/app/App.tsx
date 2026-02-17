@@ -7,9 +7,12 @@ import SettingsPage from "./admin/settings/page";
 import AdminProjects from "./admin/projects/page";
 import AdminTestimonials from "./admin/testimonials/page";
 
+import { Toaster } from "sonner";
+
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster richColors position="top-center" />
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<LandingPage />} />

@@ -1,11 +1,12 @@
 import { motion } from "motion/react";
 import { Mail, MessageSquare, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 export function Contact() {
   return (
     <section id="contact" className="py-24 bg-slate-950 relative">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-900 to-transparent"></div>
-      
+
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-slate-900 rounded-2xl p-8 md:p-12 border border-slate-800 shadow-2xl relative overflow-hidden">
           {/* Decorative glow */}
@@ -21,16 +22,24 @@ export function Contact() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <a 
-              href="mailto:contact@example.com" 
-              className="flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-xl transition-all border border-slate-700 group"
+            <a
+              href="mailto:giorgio@arteinovacao.com.br?subject=Quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos"
+              onClick={(e) => {
+                const email = "giorgio@arteinovacao.com.br";
+                navigator.clipboard.writeText(email);
+                toast.success("E-mail copiado para a área de transferência!");
+                // O href continuará a tentar abrir o cliente de email
+              }}
+              className="flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-xl transition-all border border-slate-700 group cursor-pointer"
             >
               <Mail className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
               <span className="font-semibold">Enviar E-mail</span>
             </a>
-            
-            <a 
-              href="#" 
+
+            <a
+              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl transition-all shadow-lg shadow-indigo-500/20 group"
             >
               <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
