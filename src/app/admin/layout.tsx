@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { LayoutDashboard, LogOut, FileText, MessageSquare, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, LogOut, FileText, MessageSquare, Settings, Menu, X, Plug } from "lucide-react";
 import { auth } from "../../lib/auth";
 
 export default function AdminLayout() {
@@ -95,6 +95,7 @@ export default function AdminLayout() {
                     <NavItem to="/admin" icon={<LayoutDashboard size={20} />} label="Dashboard" onClick={() => setMobileMenuOpen(false)} />
                     <NavItem to="/admin/projects" icon={<FileText size={20} />} label="Projetos" onClick={() => setMobileMenuOpen(false)} />
                     <NavItem to="/admin/testimonials" icon={<MessageSquare size={20} />} label="Depoimentos" onClick={() => setMobileMenuOpen(false)} />
+                    <NavItem to="/admin/integrations" icon={<Plug size={20} />} label="Integrações" onClick={() => setMobileMenuOpen(false)} />
                     <NavItem to="/admin/settings" icon={<Settings size={20} />} label="Configurações" onClick={() => setMobileMenuOpen(false)} />
                 </nav>
 
@@ -142,8 +143,8 @@ function NavItem({ to, icon, label, onClick }: { to: string; icon: React.ReactNo
                 onClick?.();
             }}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-all duration-200 ${isActive
-                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                 }`}
         >
             {icon}

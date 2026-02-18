@@ -23,10 +23,10 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
+            <a href="https://www.linkedin.com/in/giorgioderico/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
+            <a href="https://www.instagram.com/arte.inovacao.dev/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
               <Instagram className="w-5 h-5" />
             </a>
           </div>
