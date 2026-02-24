@@ -160,7 +160,7 @@ export default function AdminTestimonials() {
                             layout
                             className="group bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-indigo-500/30 transition-all flex flex-col relative"
                         >
-                            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute top-4 right-4 flex gap-2">
                                 <button
                                     onClick={() => handleOpenModal(testimonial)}
                                     className="p-2 bg-slate-800 text-slate-300 hover:text-white rounded-lg hover:bg-indigo-600 transition-colors"

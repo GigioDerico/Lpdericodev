@@ -169,7 +169,7 @@ export default function AdminProjects() {
                                         <ImageIcon size={40} />
                                     </div>
                                 )}
-                                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="absolute top-2 right-2 flex gap-2">
                                     <button
                                         onClick={() => handleOpenModal(project)}
                                         className="p-2 bg-slate-900/80 backdrop-blur text-white rounded-lg hover:bg-indigo-600 transition-colors"
