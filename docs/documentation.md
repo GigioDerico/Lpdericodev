@@ -116,4 +116,36 @@ Siga os passos abaixo para rodar o projeto localmente em sua máquina.
 
 ---
 
-> **Dica**: Para editar o conteúdo das seções (ex: textos do Hero, lista de projetos), navegue até o componente correspondente em `src/app/components/`.
+> **Dica**: Para editar o conteúdo das seções (ex: textos do Hero, lista de projetos), navegue até o componente correspondente em `src/app/components/`. Caso o conteúdo seja dinâmico (como os projetos), eles podem ser gerenciados pelo Painel Administrativo.
+
+---
+
+## 🆕 Últimas Atualizações
+
+O projeto recebeu uma série de melhorias focadas em performance, gestão de conteúdo e marketing:
+
+-   **Painel Administrativo Completo:** Sistema de gestão protegido por autenticação para criação, leitura, atualização e deleção (CRUD) de **Projetos**, **Depoimentos**, bem como acesso fácil às **Configurações Gerais** e **Integrações**.
+-   **SEO Dinâmico e Integrações:** Implementação nativa de um gerenciador de tags. É possível adicionar IDs para **Google Analytics 4 (GA4)**, **Meta Pixel** e **Hotjar** diretamente pelo painel administrativo, sem a necessidade de mexer no código ou instalar bibliotecas de terceiros pesadas. Configurações completas de tags Meta de SEO implementadas.
+-   **Otimização de Performance Abissal:** Correções em "paint" (LCP/CLS), divisão de pacotes de JavaScript (split chunks) para melhorar o carregamento em redes lentas, e aplicação de carregamento sob demanda (*lazy loading*) para imagens e mídias pesadas.
+-   **Identidade Visual e Layout Renovados:** Atualização no esquema visual, links e chamadas de ação para contato (incluindo acesso rápido via WhatsApp e Email).
+
+---
+
+## 🔐 Como Acessar o Painel Administrativo (Admin)
+
+Para facilitar a gestão do portfólio sem precisar de commits novos, o LP conta com uma área administrativa separada.
+
+### Rotas do Admin
+
+-   **Página de Login**: Acesse `/admin/login`
+-   **Dashboard (Painel Geral)**: Acesse `/admin` (requer autenticação)
+-   **Gerenciar Projetos**: `/admin/projects`
+-   **Gerenciar Depoimentos**: `/admin/testimonials`
+-   **Gerenciar Integrações (Pixels/Tags)**: `/admin/integrations`
+-   **Configurações SEO**: `/admin/settings`
+
+### Login
+
+O sistema de autenticação protege as rotas. Caso não esteja logado e tente acessar o `/admin` ou suas subrotas, o sistema de roteamento fará um redirecionamento automático para `/admin/login`.
+
+Uma vez logado, todo o gerenciamento de conteúdo ficará visível e suas alterações se refletirão imediatamente na Landing Page pública.
