@@ -4,7 +4,7 @@ import { Star, Quote, ArrowRight, MessageSquare, ChevronLeft, ChevronRight, Load
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { sql } from "../../lib/neon";
+import { TestimonialsService } from "../../lib/services";
 
 interface Testimonial {
   id: string;
@@ -55,17 +55,8 @@ export function Testimonials() {
 
   useEffect(() => {
     const fetchTestimonials = async () => {
-      if (!sql) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        const result = await sql`
-          SELECT id, name, text, photo_url, rating
-          FROM public.testimonials
-          ORDER BY created_at DESC
-        `;
+        const result = await TestimonialsService.getAll();
         setReviews(result.map((r: any) => ({
           ...r,
           image_url: r.photo_url // Map database column to component prop

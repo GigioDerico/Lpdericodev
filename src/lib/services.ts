@@ -1,4 +1,4 @@
-import { sql } from "./neon";
+// Service layer to interact with our new Serverless API
 
 export interface Project {
   id: string;
@@ -27,61 +27,35 @@ export interface Testimonial {
 
 export const ProjectsService = {
   async getAll() {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      SELECT * FROM public.projects ORDER BY created_at DESC
-    `;
+    const res = await fetch('/api/projects');
+    if (!res.ok) throw new Error("Failed to fetch projects");
+    return await res.json();
   },
 
   async create(project: Omit<Project, "id" | "created_at">) {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      INSERT INTO public.projects (title, category, description, image_url, tags, link, highlighted)
-      VALUES (${project.title}, ${project.category}, ${project.description}, ${project.image_url}, ${project.tags}, ${project.link}, ${project.highlighted})
-      RETURNING *
-    `;
+    const res = await fetch('/api/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(project),
+    });
+    if (!res.ok) throw new Error("Failed to create project");
+    return [await res.json()];
   },
 
   async update(id: string, project: Partial<Project>) {
-    if (!sql) throw new Error("Database not configured");
-    const updates: any[] = [];
-    if (project.title !== undefined) updates.push(sql`title = ${project.title}`);
-    if (project.category !== undefined) updates.push(sql`category = ${project.category}`);
-    if (project.description !== undefined) updates.push(sql`description = ${project.description}`);
-    if (project.image_url !== undefined) updates.push(sql`image_url = ${project.image_url}`);
-    if (project.tags !== undefined) updates.push(sql`tags = ${project.tags}`);
-    if (project.link !== undefined) updates.push(sql`link = ${project.link}`);
-    if (project.highlighted !== undefined) updates.push(sql`highlighted = ${project.highlighted}`);
-
-    // Add updated_at manually since it's always updated
-    updates.push(sql`updated_at = NOW()`);
-
-    if (updates.length <= 1) return []; // Nothing to update besides timestamp (or even less)
-
-    // Construct dynamic update query (simplified for neon)
-    // Note: neon/postgres driver template literals are strict. 
-    // For dynamic columns, it's safer to pass full object if possible, but let's stick to full update for simplicity first version:
-
-    return await sql`
-      UPDATE public.projects
-      SET title = ${project.title},
-          category = ${project.category},
-          description = ${project.description},
-          image_url = ${project.image_url},
-          tags = ${project.tags},
-          link = ${project.link},
-          highlighted = ${project.highlighted},
-          updated_at = NOW()
-      WHERE id = ${id}
-      RETURNING *
-    `;
+    const res = await fetch(`/api/projects?id=${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(project),
+    });
+    if (!res.ok) throw new Error("Failed to update project");
+    return [await res.json()];
   },
 
   async delete(id: string) {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      DELETE FROM public.projects WHERE id = ${id}
-    `;
+    const res = await fetch(`/api/projects?id=${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error("Failed to delete project");
+    return await res.json();
   },
 };
 
@@ -89,41 +63,35 @@ export const ProjectsService = {
 
 export const TestimonialsService = {
   async getAll() {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      SELECT * FROM public.testimonials ORDER BY created_at DESC
-    `;
+    const res = await fetch('/api/testimonials');
+    if (!res.ok) throw new Error("Failed to fetch testimonials");
+    return await res.json();
   },
 
   async create(testimonial: Omit<Testimonial, "id" | "created_at">) {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      INSERT INTO public.testimonials (name, role, photo_url, text, rating, initials)
-      VALUES (${testimonial.name}, ${testimonial.role}, ${testimonial.photo_url}, ${testimonial.text}, ${testimonial.rating}, ${testimonial.initials})
-      RETURNING *
-    `;
+    const res = await fetch('/api/testimonials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testimonial),
+    });
+    if (!res.ok) throw new Error("Failed to create testimonial");
+    return [await res.json()];
   },
 
   async update(id: string, testimonial: Partial<Testimonial>) {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      UPDATE public.testimonials
-      SET name = ${testimonial.name},
-          role = ${testimonial.role},
-          photo_url = ${testimonial.photo_url},
-          text = ${testimonial.text},
-          rating = ${testimonial.rating},
-          initials = ${testimonial.initials}
-      WHERE id = ${id}
-      RETURNING *
-    `;
+    const res = await fetch(`/api/testimonials?id=${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testimonial),
+    });
+    if (!res.ok) throw new Error("Failed to update testimonial");
+    return [await res.json()];
   },
 
   async delete(id: string) {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      DELETE FROM public.testimonials WHERE id = ${id}
-    `;
+    const res = await fetch(`/api/testimonials?id=${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error("Failed to delete testimonial");
+    return await res.json();
   },
 };
 
@@ -139,31 +107,34 @@ export interface SiteSetting {
 
 export const SettingsService = {
   async getAll(): Promise<SiteSetting[]> {
-    if (!sql) throw new Error("Database not configured");
-    const rows = await sql`SELECT * FROM public.site_settings ORDER BY key ASC`;
-    return rows as unknown as SiteSetting[];
+    const res = await fetch('/api/settings');
+    if (!res.ok) throw new Error("Failed to fetch settings");
+    return await res.json();
   },
 
   async getByKey(key: string): Promise<SiteSetting | null> {
-    if (!sql) throw new Error("Database not configured");
-    const rows = await sql`SELECT * FROM public.site_settings WHERE key = ${key} LIMIT 1`;
-    return (rows as unknown as SiteSetting[])[0] ?? null;
+    const res = await fetch(`/api/settings?key=${key}`);
+    if (!res.ok) throw new Error("Failed to fetch setting by key");
+    return await res.json();
   },
 
   async upsert(key: string, value: string, description?: string): Promise<SiteSetting[]> {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      INSERT INTO public.site_settings (key, value, description, updated_at)
-      VALUES (${key}, ${value}, ${description ?? ''}, NOW())
-      ON CONFLICT (key) DO UPDATE SET value = ${value}, updated_at = NOW()
-      RETURNING *
-    ` as unknown as SiteSetting[];
+    const res = await fetch('/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, value, description }),
+    });
+    if (!res.ok) throw new Error("Failed to upsert setting");
+    return [await res.json()];
   },
 
   async updateValue(key: string, value: string): Promise<SiteSetting[]> {
-    if (!sql) throw new Error("Database not configured");
-    return await sql`
-      UPDATE public.site_settings SET value = ${value}, updated_at = NOW() WHERE key = ${key} RETURNING *
-    ` as unknown as SiteSetting[];
+    const res = await fetch(`/api/settings?key=${key}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value }),
+    });
+    if (!res.ok) throw new Error("Failed to update setting");
+    return [await res.json()];
   },
 };

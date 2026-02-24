@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, ExternalLink, Layers, Loader2 } from "lucide-react";
-import { sql } from "../../lib/neon";
-
+import { ProjectsService } from "../../lib/services";
 interface Project {
   id: string;
   title: string;
@@ -19,17 +18,8 @@ export function Projects() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      if (!sql) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        const result = await sql`
-          SELECT id, title, category, description, image_url, tags, link
-          FROM public.projects
-          ORDER BY created_at DESC
-        `;
+        const result = await ProjectsService.getAll();
         setProjects(result as Project[]);
       } catch (err) {
         console.error("Error fetching projects:", err);

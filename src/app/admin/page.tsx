@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { FolderGit2, MessageSquare, Loader2 } from "lucide-react";
-import { sql } from "../../lib/neon";
+import { Loader2, FolderGit2, MessageSquare } from "lucide-react";
 
 interface DashboardStats {
     projectsCount: number;
@@ -15,21 +14,14 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         const fetchStats = async () => {
-            if (!sql) {
-                setError("Banco de dados não configurado.");
-                setLoading(false);
-                return;
-            }
-
             try {
-                const [projectsResult, testimonialsResult] = await Promise.all([
-                    sql`SELECT COUNT(*)::int as count FROM public.projects`,
-                    sql`SELECT COUNT(*)::int as count FROM public.testimonials`,
-                ]);
+                const res = await fetch('/api/stats');
+                if (!res.ok) throw new Error("Failed to load");
+                const data = await res.json();
 
                 setStats({
-                    projectsCount: projectsResult[0]?.count ?? 0,
-                    testimonialsCount: testimonialsResult[0]?.count ?? 0,
+                    projectsCount: data.projectsCount ?? 0,
+                    testimonialsCount: data.testimonialsCount ?? 0,
                 });
             } catch (err: any) {
                 console.error("Dashboard fetch error:", err);
