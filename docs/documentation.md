@@ -56,13 +56,20 @@ A estrutura de diretórios segue um padrão organizado para escalabilidade e man
 ```bash
 /
 ├── .agent/                 # Configurações de agentes de AI e skills
-├── docs/                   # Documentação do projeto (este arquivo e outros)
+├── api/                    # Vercel Serverless Functions (Backend / API REST)
+│   ├── _lib/               # Utilitários do servidor (Ex: configuração Neon DB)
+│   ├── auth.ts             # Endpoints de autenticação / Sessão / Users
+│   ├── projects.ts         # Endpoints CRUD de Projetos
+│   ├── testimonials.ts     # Endpoints CRUD de Depoimentos
+│   └── settings.ts         # Endpoints CRUD de Configurações
+├── docs/                   # Documentação do projeto
 ├── src/
-│   ├── app/                # Lógica principal da aplicação
-│   │   ├── App.tsx         # Componente raiz que monta a Landing Page
-│   │   └── components/     # Componentes de UI reutilizáveis e seções da LP
+│   ├── app/                # Lógica de Frontend (React)
+│   │   ├── admin/          # Rotas e Dashboard do Painel Administrativo
+│   │   ├── components/     # Componentes de UI reutilizáveis e seções da LP
+│   │   └── App.tsx         # Roteador principal
 │   ├── assets/             # Imagens, ícones e arquivos estáticos
-│   ├── lib/                # Funções utilitárias (ex: cn.ts)
+│   ├── lib/                # Serviços HTTP do Frontend (fetch para /api)
 │   ├── styles/             # Arquivos CSS globais e configurações do Tailwind
 │   └── main.tsx            # Ponto de entrada da aplicação ReactDOM
 ├── package.json            # Gerenciamento de dependências e scripts
@@ -125,6 +132,7 @@ Siga os passos abaixo para rodar o projeto localmente em sua máquina.
 O projeto recebeu uma série de melhorias focadas em performance, gestão de conteúdo e marketing:
 
 -   **Painel Administrativo Completo:** Sistema de gestão protegido por autenticação para criação, leitura, atualização e deleção (CRUD) de **Projetos**, **Depoimentos**, bem como acesso fácil às **Configurações Gerais** e **Integrações**.
+-   **Segurança Serverless (Vercel Functions):** Todo o painel de adminsitração e busca de dados foi migrado do Client-Side (Frontend) para um Serverless Backend seguro hospedado nas endpoints nativas da Vercel (`/api/*`), garantindo que senhas de bancos de dados como o Neon fiquem ocultas do cliente.
 -   **SEO Dinâmico e Integrações:** Implementação nativa de um gerenciador de tags. É possível adicionar IDs para **Google Analytics 4 (GA4)**, **Meta Pixel** e **Hotjar** diretamente pelo painel administrativo, sem a necessidade de mexer no código ou instalar bibliotecas de terceiros pesadas. Configurações completas de tags Meta de SEO implementadas.
 -   **Otimização de Performance Abissal:** Correções em "paint" (LCP/CLS), divisão de pacotes de JavaScript (split chunks) para melhorar o carregamento em redes lentas, e aplicação de carregamento sob demanda (*lazy loading*) para imagens e mídias pesadas.
 -   **Identidade Visual e Layout Renovados:** Atualização no esquema visual, links e chamadas de ação para contato (incluindo acesso rápido via WhatsApp e Email).
