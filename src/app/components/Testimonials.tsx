@@ -89,14 +89,15 @@ export function Testimonials() {
         settings: {
           slidesToShow: Math.min(reviews.length, 2),
           slidesToScroll: 1,
+          arrows: reviews.length > 2,
         }
       },
       {
-        breakpoint: 640,
+        breakpoint: 768,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          arrows: false
+          arrows: false,
         }
       }
     ],
@@ -143,10 +144,18 @@ export function Testimonials() {
         }
         .slick-slide {
           height: auto;
-          padding: 0 12px; 
+          padding: 0 4px;
         }
         .slick-slide > div {
           height: 100%;
+        }
+        @media (min-width: 768px) {
+          .slick-slide {
+            padding: 0 12px;
+          }
+        }
+        .slick-list {
+          overflow: hidden;
         }
       `}</style>
 
@@ -171,7 +180,7 @@ export function Testimonials() {
         </div>
 
         {/* Reviews Carousel */}
-        <div className="mb-24 px-4 md:px-8">
+        <div className="mb-16 md:mb-24 px-0 md:px-8">
           <Slider {...settings}>
             {reviews.map((review, index) => (
               <div key={review.id} className="h-full pt-2 pb-2">
@@ -180,7 +189,7 @@ export function Testimonials() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-slate-900/50 p-8 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all flex flex-col h-full relative group min-h-[320px]"
+                  className="bg-slate-900/50 p-5 md:p-8 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all flex flex-col h-full relative group min-h-[260px] md:min-h-[320px]"
                 >
                   <Quote className="absolute top-6 right-6 w-8 h-8 text-slate-800 group-hover:text-indigo-500/20 transition-colors" />
 
