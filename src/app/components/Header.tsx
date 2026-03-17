@@ -53,7 +53,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+    <div className="hidden md:flex items-center gap-1">
             <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/5 mr-4">
               {links.map((link) => (
                 <a
@@ -73,17 +73,44 @@ export function Header() {
                 </a>
               ))}
             </div>
-            <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative overflow-hidden group bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.7)]"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Vamos Conversar
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </a>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.linkedin.com/in/giorgioderico/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn de Giorgio Derico"
+                className="text-slate-400 hover:text-indigo-400 transition-colors p-2 rounded-full hover:bg-white/5"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+
+              <a
+                href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative overflow-hidden group bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.7)]"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Vamos Conversar
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </a>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -117,15 +144,40 @@ export function Header() {
                 {link.name}
               </a>
             ))}
-            <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsOpen(false)}
-              className="block mt-4 px-4 py-3 bg-indigo-600 text-white text-center rounded-xl font-bold shadow-lg shadow-indigo-500/25"
-            >
-              Iniciar Projeto
-            </a>
+            <div className="flex items-center gap-4 mt-4 px-4">
+              <a
+                href="https://www.linkedin.com/in/giorgioderico/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn de Giorgio Derico"
+                className="text-slate-400 hover:text-indigo-400 transition-colors p-2 rounded-full hover:bg-white/5 border border-white/5 flex-shrink-0"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              <a
+                href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="block flex-1 py-3 bg-indigo-600 text-white text-center rounded-xl font-bold shadow-lg shadow-indigo-500/25"
+              >
+                Iniciar Projeto
+              </a>
+            </div>
           </div>
         </motion.div>
       )}

@@ -1,8 +1,27 @@
 import { motion } from "motion/react";
 import { Mail, MessageSquare, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
 
 export function Contact() {
+  const { settings } = useIntegrations();
+
+  function handleWhatsAppClick() {
+    trackConversion(
+      "cta_whatsapp_contact",
+      settings.google_ads_id && settings.google_ads_conversion_label
+        ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
+        : undefined
+    );
+  }
+
+  function handleEmailClick() {
+    const email = "giorgio@arteinovacao.com.br";
+    navigator.clipboard.writeText(email);
+    toast.success("E-mail copiado para a área de transferência!");
+    trackConversion("cta_email_contact");
+  }
+
   return (
     <section id="contact" className="py-24 bg-slate-950 relative">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-900 to-transparent"></div>
@@ -24,12 +43,7 @@ export function Contact() {
           <div className="grid md:grid-cols-2 gap-6">
             <a
               href="mailto:giorgio@arteinovacao.com.br?subject=Quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos"
-              onClick={(e) => {
-                const email = "giorgio@arteinovacao.com.br";
-                navigator.clipboard.writeText(email);
-                toast.success("E-mail copiado para a área de transferência!");
-                // O href continuará a tentar abrir o cliente de email
-              }}
+              onClick={handleEmailClick}
               className="flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-xl transition-all border border-slate-700 group cursor-pointer"
             >
               <Mail className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
@@ -37,9 +51,10 @@ export function Contact() {
             </a>
 
             <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
+              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos."
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleWhatsAppClick}
               className="flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl transition-all shadow-lg shadow-indigo-500/20 group"
             >
               <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
