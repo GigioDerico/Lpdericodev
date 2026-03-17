@@ -6,8 +6,8 @@ import {
     BarChart3,
     Eye,
     Share2,
-    AlertCircle,
-    CheckCircle2,
+    Target,
+    Tag,
 } from "lucide-react";
 import { toast } from "sonner";
 import { SettingsService, type SiteSetting } from "../../../lib/services";
@@ -28,6 +28,22 @@ const INTEGRATION_FIELDS: IntegrationField[] = [
         placeholder: "G-XXXXXXXXXX",
         description: "ID de Medição do GA4 para rastrear visitas e comportamento dos usuários.",
         icon: <BarChart3 size={20} />,
+        group: "analytics",
+    },
+    {
+        key: "google_ads_id",
+        label: "Google Ads — ID de Conversão",
+        placeholder: "AW-XXXXXXXXX",
+        description: "ID da conta Google Ads (ex: AW-123456789). Encontrado em Google Ads → Metas → Ações de conversão → Tag do Google.",
+        icon: <Target size={20} />,
+        group: "analytics",
+    },
+    {
+        key: "google_ads_conversion_label",
+        label: "Google Ads — Rótulo de Conversão",
+        placeholder: "xXxXxXxX_xXxXxXx",
+        description: "Rótulo da ação de conversão específica (ex: clique em WhatsApp ou formulário). Encontrado na mesma tela da tag do Google Ads.",
+        icon: <Tag size={20} />,
         group: "analytics",
     },
     {

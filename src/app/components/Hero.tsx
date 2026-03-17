@@ -1,8 +1,20 @@
 import { motion } from "motion/react";
 import { ArrowRight, Code2, Database, Zap, Cpu, Terminal, Globe } from "lucide-react";
 import profileImage from "../../assets/1766698fd4c6d21a55a82b9062b79bd60a61e1c1.png";
+import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
 
 export function Hero() {
+  const { settings } = useIntegrations();
+
+  function handleCtaClick() {
+    trackConversion(
+      "cta_whatsapp_hero",
+      settings.google_ads_id && settings.google_ads_conversion_label
+        ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
+        : undefined
+    );
+  }
+
   return (
     <section id="about" className="relative min-h-[90vh] flex items-center pt-20 bg-[#0B0F19] overflow-hidden">
       {/* Dynamic Background Elements */}
@@ -63,6 +75,7 @@ export function Hero() {
               href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleCtaClick}
               className="px-8 py-4 bg-white text-slate-950 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 group"
             >
               Iniciar Projeto <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
