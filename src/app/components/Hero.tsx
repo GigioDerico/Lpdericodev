@@ -1,14 +1,32 @@
 import { motion } from "motion/react";
-import { ArrowRight, Code2, Database, Zap, Cpu, Terminal, Globe } from "lucide-react";
+import { Code2, Database, Zap, Cpu, Terminal } from "lucide-react";
 import profileImage from "../../assets/1766698fd4c6d21a55a82b9062b79bd60a61e1c1.png";
 import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
+import {
+  PAGE_CTA_DEFAULTS,
+  PAGE_CTA_KEYS,
+  getIconComponent,
+  isExternalHttpLink,
+  normalizeCtaHref,
+  resolveIconKey,
+} from "../lib/pageCtas";
 
 export function Hero() {
   const { settings } = useIntegrations();
+  const heroLabel = settings[PAGE_CTA_KEYS.heroPrimary.label] ?? PAGE_CTA_DEFAULTS.heroPrimary.label;
+  const heroHref = normalizeCtaHref(
+    settings[PAGE_CTA_KEYS.heroPrimary.href] ?? PAGE_CTA_DEFAULTS.heroPrimary.href
+  );
+  const heroIconKey = resolveIconKey(
+    settings[PAGE_CTA_KEYS.heroPrimary.icon],
+    PAGE_CTA_DEFAULTS.heroPrimary.icon
+  );
+  const HeroIcon = getIconComponent(heroIconKey);
+  const openHeroInNewTab = isExternalHttpLink(heroHref);
 
   function handleCtaClick() {
     trackConversion(
-      "cta_whatsapp_hero",
+      "cta_hero_primary",
       settings.google_ads_id && settings.google_ads_conversion_label
         ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
         : undefined
@@ -72,13 +90,14 @@ export function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
-              target="_blank"
-              rel="noopener noreferrer"
+              href={heroHref}
+              target={openHeroInNewTab ? "_blank" : undefined}
+              rel={openHeroInNewTab ? "noopener noreferrer" : undefined}
               onClick={handleCtaClick}
               className="px-8 py-4 bg-white text-slate-950 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 group"
             >
-              Iniciar Projeto <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              {heroLabel}
+              {HeroIcon ? <HeroIcon className="w-4 h-4 group-hover:scale-110 transition-transform" /> : null}
             </a>
             <a
               href="#projects"

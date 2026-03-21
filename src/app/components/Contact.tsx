@@ -1,25 +1,52 @@
 import { motion } from "motion/react";
-import { Mail, MessageSquare, ArrowRight } from "lucide-react";
-import { toast } from "sonner";
 import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
+import {
+  PAGE_CTA_DEFAULTS,
+  PAGE_CTA_KEYS,
+  getIconComponent,
+  isExternalHttpLink,
+  normalizeCtaHref,
+  resolveIconKey,
+} from "../lib/pageCtas";
 
 export function Contact() {
   const { settings } = useIntegrations();
 
+  const emailLabel = settings[PAGE_CTA_KEYS.contactEmail.label] ?? PAGE_CTA_DEFAULTS.contactEmail.label;
+  const emailHref = normalizeCtaHref(
+    settings[PAGE_CTA_KEYS.contactEmail.href] ?? PAGE_CTA_DEFAULTS.contactEmail.href
+  );
+  const emailIconKey = resolveIconKey(
+    settings[PAGE_CTA_KEYS.contactEmail.icon],
+    PAGE_CTA_DEFAULTS.contactEmail.icon
+  );
+
+  const whatsappLabel = settings[PAGE_CTA_KEYS.contactWhatsapp.label] ?? PAGE_CTA_DEFAULTS.contactWhatsapp.label;
+  const whatsappHref = normalizeCtaHref(
+    settings[PAGE_CTA_KEYS.contactWhatsapp.href] ?? PAGE_CTA_DEFAULTS.contactWhatsapp.href
+  );
+  const whatsappIconKey = resolveIconKey(
+    settings[PAGE_CTA_KEYS.contactWhatsapp.icon],
+    PAGE_CTA_DEFAULTS.contactWhatsapp.icon
+  );
+
+  const EmailIcon = getIconComponent(emailIconKey);
+  const WhatsappIcon = getIconComponent(whatsappIconKey);
+
+  const emailOpensNewTab = isExternalHttpLink(emailHref);
+  const whatsappOpensNewTab = isExternalHttpLink(whatsappHref);
+
+  const adsConversionTarget =
+    settings.google_ads_id && settings.google_ads_conversion_label
+      ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
+      : undefined;
+
   function handleWhatsAppClick() {
-    trackConversion(
-      "cta_whatsapp_contact",
-      settings.google_ads_id && settings.google_ads_conversion_label
-        ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
-        : undefined
-    );
+    trackConversion("cta_contact_whatsapp", adsConversionTarget);
   }
 
-  function handleEmailClick() {
-    const email = "giorgio@arteinovacao.com.br";
-    navigator.clipboard.writeText(email);
-    toast.success("E-mail copiado para a área de transferência!");
-    trackConversion("cta_email_contact");
+  function handlePrimaryContactClick() {
+    trackConversion("cta_contact_primary", adsConversionTarget);
   }
 
   return (
@@ -42,24 +69,29 @@ export function Contact() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <a
-              href="mailto:giorgio@arteinovacao.com.br?subject=Quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos"
-              onClick={handleEmailClick}
+              href={emailHref}
+              target={emailOpensNewTab ? "_blank" : undefined}
+              rel={emailOpensNewTab ? "noopener noreferrer" : undefined}
+              onClick={handlePrimaryContactClick}
               className="flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-xl transition-all border border-slate-700 group cursor-pointer"
             >
-              <Mail className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold">Enviar E-mail</span>
+              {EmailIcon ? (
+                <EmailIcon className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
+              ) : null}
+              <span className="font-semibold">{emailLabel}</span>
             </a>
 
             <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos."
-              target="_blank"
-              rel="noopener noreferrer"
+              href={whatsappHref}
+              target={whatsappOpensNewTab ? "_blank" : undefined}
+              rel={whatsappOpensNewTab ? "noopener noreferrer" : undefined}
               onClick={handleWhatsAppClick}
               className="flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl transition-all shadow-lg shadow-indigo-500/20 group"
             >
-              <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold">Chamar no WhatsApp</span>
-              <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-1" />
+              {WhatsappIcon ? (
+                <WhatsappIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              ) : null}
+              <span className="font-semibold">{whatsappLabel}</span>
             </a>
           </div>
         </div>
