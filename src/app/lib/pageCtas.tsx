@@ -15,6 +15,12 @@ export interface CtaConfig {
     href: string;
 }
 
+export interface HeroContentConfig {
+    titleLine1: string;
+    titleLine2: string;
+    description: string;
+}
+
 export interface CtaFieldKeys {
     label: string;
     icon: string;
@@ -96,6 +102,19 @@ export const PAGE_CTA_DEFAULTS: Record<PageCtaId, CtaConfig> = {
         icon: "MessageSquare",
         href: "https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20informações%20sobre%20desenvolvimento%20de%20aplicativos.",
     },
+};
+
+export const HERO_CONTENT_KEYS = {
+    titleLine1: "components.hero.content.title_line_1",
+    titleLine2: "components.hero.content.title_line_2",
+    description: "components.hero.content.description",
+} as const;
+
+export const HERO_CONTENT_DEFAULTS: HeroContentConfig = {
+    titleLine1: "Arquiteto",
+    titleLine2: "Full Stack",
+    description:
+        "Especialista em aplicações Bubble.io de alta performance integradas com IA e Supabase. Construo produtos digitais escaláveis, não apenas telas.",
 };
 
 export function resolveIconKey(value: string | undefined, fallback: IconKey): IconKey {

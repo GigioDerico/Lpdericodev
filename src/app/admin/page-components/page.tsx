@@ -13,10 +13,13 @@ import {
 import { toast } from "sonner";
 import { SettingsService, type SiteSetting } from "../../../lib/services";
 import {
+    HERO_CONTENT_DEFAULTS,
+    HERO_CONTENT_KEYS,
     ICON_OPTIONS,
     PAGE_CTA_DEFAULTS,
     PAGE_CTA_KEYS,
     type CtaConfig,
+    type HeroContentConfig,
     type IconKey,
     type PageCtaId,
     resolveIconKey,
@@ -82,6 +85,7 @@ export default function PageComponentsAdmin() {
     const [saving, setSaving] = useState(false);
     const [settings, setSettings] = useState<Record<string, string>>({});
     const [ctas, setCtas] = useState<Record<PageCtaId, CtaConfig>>(buildInitialCtas({}));
+    const [heroContent, setHeroContent] = useState<HeroContentConfig>(HERO_CONTENT_DEFAULTS);
 
     const pageTabs = useMemo(
         () =>
@@ -117,6 +121,11 @@ export default function PageComponentsAdmin() {
     useEffect(() => {
         if (!loaded) return;
         setCtas(buildInitialCtas(settings));
+        setHeroContent({
+            titleLine1: settings[HERO_CONTENT_KEYS.titleLine1] ?? HERO_CONTENT_DEFAULTS.titleLine1,
+            titleLine2: settings[HERO_CONTENT_KEYS.titleLine2] ?? HERO_CONTENT_DEFAULTS.titleLine2,
+            description: settings[HERO_CONTENT_KEYS.description] ?? HERO_CONTENT_DEFAULTS.description,
+        });
     }, [loaded, settings]);
 
     function updateCtaLabel(id: PageCtaId, value: string) {
@@ -164,11 +173,28 @@ export default function PageComponentsAdmin() {
                 ];
             });
 
-            await Promise.all(updates);
-            toast.success("CTAs da página salvos com sucesso!");
+            await Promise.all([
+                ...updates,
+                SettingsService.upsert(
+                    HERO_CONTENT_KEYS.titleLine1,
+                    heroContent.titleLine1,
+                    "Título principal da Hero (linha 1)"
+                ),
+                SettingsService.upsert(
+                    HERO_CONTENT_KEYS.titleLine2,
+                    heroContent.titleLine2,
+                    "Título principal da Hero (linha destacada)"
+                ),
+                SettingsService.upsert(
+                    HERO_CONTENT_KEYS.description,
+                    heroContent.description,
+                    "Descrição padrão da Hero"
+                ),
+            ]);
+            toast.success("Componentes da página salvos com sucesso!");
         } catch (error) {
             console.error(error);
-            toast.error("Erro ao salvar CTAs da página.");
+            toast.error("Erro ao salvar componentes da página.");
         } finally {
             setSaving(false);
         }
@@ -237,13 +263,27 @@ export default function PageComponentsAdmin() {
                                         <div>
                                             <h2 className="text-lg font-semibold text-white">Hero</h2>
                                             <p className="text-sm text-slate-500">
-                                                Botão principal de abertura da página.
+                                                Conteúdo principal e botão de abertura da página.
                                             </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4">
+                                    <HeroContentEditor
+                                        titleLine1={heroContent.titleLine1}
+                                        onChangeTitleLine1={(v) =>
+                                            setHeroContent((prev) => ({ ...prev, titleLine1: v }))
+                                        }
+                                        titleLine2={heroContent.titleLine2}
+                                        onChangeTitleLine2={(v) =>
+                                            setHeroContent((prev) => ({ ...prev, titleLine2: v }))
+                                        }
+                                        description={heroContent.description}
+                                        onChangeDescription={(v) =>
+                                            setHeroContent((prev) => ({ ...prev, description: v }))
+                                        }
+                                    />
                                     <CTAEditor
                                         title="Iniciar Projeto"
                                         subtitle="Botão principal do Hero"
@@ -358,6 +398,74 @@ export default function PageComponentsAdmin() {
                     </form>
                 )}
             </motion.div>
+        </div>
+    );
+}
+
+function HeroContentEditor({
+    titleLine1,
+    onChangeTitleLine1,
+    titleLine2,
+    onChangeTitleLine2,
+    description,
+    onChangeDescription,
+}: {
+    titleLine1: string;
+    onChangeTitleLine1: (v: string) => void;
+    titleLine2: string;
+    onChangeTitleLine2: (v: string) => void;
+    description: string;
+    onChangeDescription: (v: string) => void;
+}) {
+    return (
+        <div className="bg-slate-950/30 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-start gap-3 mb-4">
+                <div className="w-10 h-10 bg-slate-900 rounded-lg border border-slate-700 flex items-center justify-center">
+                    <Type size={16} />
+                </div>
+                <div>
+                    <h3 className="text-white font-semibold">Texto da Hero</h3>
+                    <p className="text-xs text-slate-500">Título e descrição destacados no topo da página.</p>
+                </div>
+            </div>
+
+            <div className="space-y-4">
+                <div className="space-y-2">
+                    <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                        Título (linha 1)
+                    </label>
+                    <input
+                        type="text"
+                        value={titleLine1}
+                        onChange={(e) => onChangeTitleLine1(e.target.value)}
+                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl py-3 px-4 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm"
+                    />
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                        Título (linha destacada)
+                    </label>
+                    <input
+                        type="text"
+                        value={titleLine2}
+                        onChange={(e) => onChangeTitleLine2(e.target.value)}
+                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl py-3 px-4 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm"
+                    />
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                        Texto padrão
+                    </label>
+                    <textarea
+                        rows={4}
+                        value={description}
+                        onChange={(e) => onChangeDescription(e.target.value)}
+                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl py-3 px-4 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm resize-y"
+                    />
+                </div>
+            </div>
         </div>
     );
 }

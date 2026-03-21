@@ -3,6 +3,8 @@ import { Code2, Database, Zap, Cpu, Terminal } from "lucide-react";
 import profileImage from "../../assets/1766698fd4c6d21a55a82b9062b79bd60a61e1c1.png";
 import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
 import {
+  HERO_CONTENT_DEFAULTS,
+  HERO_CONTENT_KEYS,
   PAGE_CTA_DEFAULTS,
   PAGE_CTA_KEYS,
   getIconComponent,
@@ -14,6 +16,9 @@ import {
 export function Hero() {
   const { settings } = useIntegrations();
   const heroLabel = settings[PAGE_CTA_KEYS.heroPrimary.label] ?? PAGE_CTA_DEFAULTS.heroPrimary.label;
+  const heroTitleLine1 = settings[HERO_CONTENT_KEYS.titleLine1] ?? HERO_CONTENT_DEFAULTS.titleLine1;
+  const heroTitleLine2 = settings[HERO_CONTENT_KEYS.titleLine2] ?? HERO_CONTENT_DEFAULTS.titleLine2;
+  const heroDescription = settings[HERO_CONTENT_KEYS.description] ?? HERO_CONTENT_DEFAULTS.description;
   const heroHref = normalizeCtaHref(
     settings[PAGE_CTA_KEYS.heroPrimary.href] ?? PAGE_CTA_DEFAULTS.heroPrimary.href
   );
@@ -74,19 +79,17 @@ export function Hero() {
               Olá, eu sou <span className="text-white">Giorgio</span>
             </h2>
             <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.1] tracking-tight">
-              Arquiteto <br />
+              {heroTitleLine1} <br />
               <span className="relative inline-block">
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
-                  Full Stack
+                  {heroTitleLine2}
                 </span>
                 <span className="absolute bottom-2 left-0 w-full h-3 bg-indigo-600/20 -z-0 skew-x-12"></span>
               </span>
             </h1>
           </div>
 
-          <p className="text-lg text-slate-400 max-w-lg leading-relaxed">
-            Especialista em aplicações <strong>Bubble.io</strong> de alta performance integradas com <strong>IA e Supabase</strong>. Construo produtos digitais escaláveis, não apenas telas.
-          </p>
+          <p className="text-lg text-slate-400 max-w-lg leading-relaxed whitespace-pre-line">{heroDescription}</p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a
