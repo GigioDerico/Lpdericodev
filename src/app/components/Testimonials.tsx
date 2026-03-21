@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Star, Quote, ArrowRight, MessageSquare, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { TestimonialsService } from "../../lib/services";
+import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
+import {
+  PAGE_CTA_DEFAULTS,
+  PAGE_CTA_KEYS,
+  getIconComponent,
+  isExternalHttpLink,
+  normalizeCtaHref,
+  resolveIconKey,
+} from "../lib/pageCtas";
 
 interface Testimonial {
   id: string;
@@ -52,6 +61,36 @@ function getInitials(name: string): string {
 export function Testimonials() {
   const [reviews, setReviews] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const { settings: integrationSettings } = useIntegrations();
+
+  const adsConversionTarget =
+    integrationSettings.google_ads_id && integrationSettings.google_ads_conversion_label
+      ? `${integrationSettings.google_ads_id}/${integrationSettings.google_ads_conversion_label}`
+      : undefined;
+
+  const testimonialsPrimaryLabel =
+    integrationSettings[PAGE_CTA_KEYS.testimonialsPrimary.label] ?? PAGE_CTA_DEFAULTS.testimonialsPrimary.label;
+  const testimonialsPrimaryHref = normalizeCtaHref(
+    integrationSettings[PAGE_CTA_KEYS.testimonialsPrimary.href] ?? PAGE_CTA_DEFAULTS.testimonialsPrimary.href
+  );
+  const testimonialsPrimaryIconKey = resolveIconKey(
+    integrationSettings[PAGE_CTA_KEYS.testimonialsPrimary.icon],
+    PAGE_CTA_DEFAULTS.testimonialsPrimary.icon
+  );
+  const TestimonialsPrimaryIcon = getIconComponent(testimonialsPrimaryIconKey);
+  const primaryOpensNewTab = isExternalHttpLink(testimonialsPrimaryHref);
+
+  const testimonialsSecondaryLabel =
+    integrationSettings[PAGE_CTA_KEYS.testimonialsSecondary.label] ?? PAGE_CTA_DEFAULTS.testimonialsSecondary.label;
+  const testimonialsSecondaryHref = normalizeCtaHref(
+    integrationSettings[PAGE_CTA_KEYS.testimonialsSecondary.href] ?? PAGE_CTA_DEFAULTS.testimonialsSecondary.href
+  );
+  const testimonialsSecondaryIconKey = resolveIconKey(
+    integrationSettings[PAGE_CTA_KEYS.testimonialsSecondary.icon],
+    PAGE_CTA_DEFAULTS.testimonialsSecondary.icon
+  );
+  const TestimonialsSecondaryIcon = getIconComponent(testimonialsSecondaryIconKey);
+  const secondaryOpensNewTab = isExternalHttpLink(testimonialsSecondaryHref);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -73,7 +112,7 @@ export function Testimonials() {
 
   const slidesToShow = Math.min(reviews.length, 3);
 
-  const settings = {
+  const carouselSettings = {
     dots: true,
     infinite: reviews.length > 1,
     speed: 500,
@@ -110,6 +149,14 @@ export function Testimonials() {
       <div className="w-2.5 h-2.5 rounded-full bg-slate-800 hover:bg-indigo-500 transition-colors cursor-pointer" />
     )
   };
+
+  function handlePrimaryCtaClick() {
+    trackConversion("cta_testimonials_primary", adsConversionTarget);
+  }
+
+  function handleSecondaryCtaClick() {
+    trackConversion("cta_testimonials_secondary", adsConversionTarget);
+  }
 
   if (loading) {
     return (
@@ -181,7 +228,7 @@ export function Testimonials() {
 
         {/* Reviews Carousel */}
         <div className="mb-16 md:mb-24 px-0 md:px-8">
-          <Slider {...settings}>
+          <Slider {...carouselSettings}>
             {reviews.map((review, index) => (
               <div key={review.id} className="h-full pt-2 pb-2">
                 <motion.div
@@ -244,17 +291,24 @@ export function Testimonials() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href="#contact"
+                href={testimonialsPrimaryHref}
+                target={primaryOpensNewTab ? "_blank" : undefined}
+                rel={primaryOpensNewTab ? "noopener noreferrer" : undefined}
+                onClick={handlePrimaryCtaClick}
                 className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2"
               >
-                Iniciar Meu Projeto <ArrowRight className="w-4 h-4" />
+                {testimonialsPrimaryLabel}
+                {TestimonialsPrimaryIcon ? <TestimonialsPrimaryIcon className="w-4 h-4" /> : null}
               </a>
               <a
-                href="#contact"
+                href={testimonialsSecondaryHref}
+                target={secondaryOpensNewTab ? "_blank" : undefined}
+                rel={secondaryOpensNewTab ? "noopener noreferrer" : undefined}
+                onClick={handleSecondaryCtaClick}
                 className="w-full sm:w-auto px-8 py-4 bg-slate-800/50 hover:bg-slate-800 text-white rounded-xl font-bold transition-all border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-2"
               >
-                <MessageSquare className="w-4 h-4" />
-                Falar com Especialista
+                {TestimonialsSecondaryIcon ? <TestimonialsSecondaryIcon className="w-4 h-4" /> : null}
+                {testimonialsSecondaryLabel}
               </a>
             </div>
           </motion.div>

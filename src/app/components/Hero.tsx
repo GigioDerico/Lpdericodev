@@ -1,14 +1,37 @@
 import { motion } from "motion/react";
-import { ArrowRight, Code2, Database, Zap, Cpu, Terminal, Globe } from "lucide-react";
+import { Code2, Database, Zap, Cpu, Terminal } from "lucide-react";
 import profileImage from "../../assets/1766698fd4c6d21a55a82b9062b79bd60a61e1c1.png";
 import { useIntegrations, trackConversion } from "../hooks/useIntegrations";
+import {
+  HERO_CONTENT_DEFAULTS,
+  HERO_CONTENT_KEYS,
+  PAGE_CTA_DEFAULTS,
+  PAGE_CTA_KEYS,
+  getIconComponent,
+  isExternalHttpLink,
+  normalizeCtaHref,
+  resolveIconKey,
+} from "../lib/pageCtas";
 
 export function Hero() {
   const { settings } = useIntegrations();
+  const heroLabel = settings[PAGE_CTA_KEYS.heroPrimary.label] ?? PAGE_CTA_DEFAULTS.heroPrimary.label;
+  const heroTitleLine1 = settings[HERO_CONTENT_KEYS.titleLine1] ?? HERO_CONTENT_DEFAULTS.titleLine1;
+  const heroTitleLine2 = settings[HERO_CONTENT_KEYS.titleLine2] ?? HERO_CONTENT_DEFAULTS.titleLine2;
+  const heroDescription = settings[HERO_CONTENT_KEYS.description] ?? HERO_CONTENT_DEFAULTS.description;
+  const heroHref = normalizeCtaHref(
+    settings[PAGE_CTA_KEYS.heroPrimary.href] ?? PAGE_CTA_DEFAULTS.heroPrimary.href
+  );
+  const heroIconKey = resolveIconKey(
+    settings[PAGE_CTA_KEYS.heroPrimary.icon],
+    PAGE_CTA_DEFAULTS.heroPrimary.icon
+  );
+  const HeroIcon = getIconComponent(heroIconKey);
+  const openHeroInNewTab = isExternalHttpLink(heroHref);
 
   function handleCtaClick() {
     trackConversion(
-      "cta_whatsapp_hero",
+      "cta_hero_primary",
       settings.google_ads_id && settings.google_ads_conversion_label
         ? `${settings.google_ads_id}/${settings.google_ads_conversion_label}`
         : undefined
@@ -56,29 +79,28 @@ export function Hero() {
               Olá, eu sou <span className="text-white">Giorgio</span>
             </h2>
             <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.1] tracking-tight">
-              Arquiteto <br />
+              {heroTitleLine1} <br />
               <span className="relative inline-block">
                 <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
-                  Full Stack
+                  {heroTitleLine2}
                 </span>
                 <span className="absolute bottom-2 left-0 w-full h-3 bg-indigo-600/20 -z-0 skew-x-12"></span>
               </span>
             </h1>
           </div>
 
-          <p className="text-lg text-slate-400 max-w-lg leading-relaxed">
-            Especialista em aplicações <strong>Bubble.io</strong> de alta performance integradas com <strong>IA e Supabase</strong>. Construo produtos digitais escaláveis, não apenas telas.
-          </p>
+          <p className="text-lg text-slate-400 max-w-lg leading-relaxed whitespace-pre-line">{heroDescription}</p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a
-              href="https://wa.me/5511976019844?text=Vim%20do%20site%20Derico%20Dev%20e%20quero%20mais%20infromações%20sobre%20desenvolvimento%20de%20aplicativos."
-              target="_blank"
-              rel="noopener noreferrer"
+              href={heroHref}
+              target={openHeroInNewTab ? "_blank" : undefined}
+              rel={openHeroInNewTab ? "noopener noreferrer" : undefined}
               onClick={handleCtaClick}
               className="px-8 py-4 bg-white text-slate-950 rounded-lg font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 group"
             >
-              Iniciar Projeto <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              {heroLabel}
+              {HeroIcon ? <HeroIcon className="w-4 h-4 group-hover:scale-110 transition-transform" /> : null}
             </a>
             <a
               href="#projects"

@@ -35,9 +35,9 @@ export function Header() {
         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-12" : "h-16"
-          } bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-2xl px-6 shadow-2xl shadow-indigo-500/10`}>
+          } bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-2xl px-4 shadow-2xl shadow-indigo-500/10`}>
 
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center gap-3 group cursor-pointer">
